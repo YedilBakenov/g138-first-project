@@ -11,24 +11,31 @@
 <div class="container mt-2">
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>MODEL</th>
-                <th>ENGINE</th>
-                <th>COLOR</th>
-                <th>COST</th>
-                <th style="width: 8%">DETAILS</th>
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>MODEL</th>
+            <th>ENGINE</th>
+            <th>COLOR</th>
+            <th>COST</th>
+            <th style="width: 8%">DETAILS</th>
+            <th style="width: 8%">DELETE</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="c: ${cars}">
-                <td th:text="${c.id}"></td>
-                <td th:text="${c.modelName}"></td>
-                <td th:text="${c.engine}"></td>
-                <td th:text="${c.color}"></td>
-                <td th:text="${c.cost}"></td>
-                <td> <a class="btn btn-secondary btn-sm">DETAILS</a> </td>
-            </tr>
+        <tr th:each="c: ${cars}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.modelName}"></td>
+            <td th:text="${c.engine}"></td>
+            <td th:text="${c.color}"></td>
+            <td th:text="${c.cost}"></td>
+            <td><a class="btn btn-secondary btn-sm" th:href="@{'/get-car/' + ${c.id}}">DETAILS</a></td>
+            <td>
+                <form action="/delete-car" method="post">
+                    <input type="hidden" name="id" th:value="${c.id}">
+                    <button class="btn btn-danger btn-sm">DELETE</button>
+                </form>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>

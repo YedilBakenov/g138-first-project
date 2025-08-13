@@ -5,7 +5,9 @@ import kz.carproject.car.model.Car;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,36 @@ public class CarController {
     @PostMapping(value = "/add-car")
     public String addCar(Car car){
         Car.addCar(car);
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/get-car/{id}")
+    public String getCarById(@PathVariable int id, Model model){
+
+        model.addAttribute("car", Car.getCarById(id));
+
+        return "details-car";
+    }
+
+    @GetMapping(value = "/get-car-2")
+    public String getCarById2(@RequestParam int id,
+                              Model model){
+        model.addAttribute("car", Car.getCarById(id));
+
+        return "details-car";
+    }
+
+    @PostMapping(value = "/update-car")
+    public String updateCar(Car car){
+
+        Car.updateCar(car);
+
+        return "redirect:/get-car/" + car.getId();
+    }
+
+    @PostMapping(value = "/delete-car")
+    public String deleteCar(@RequestParam int id){
+        Car.deleteCar(id);
         return "redirect:/";
     }
 
