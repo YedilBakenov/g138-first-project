@@ -1,6 +1,7 @@
 package kz.carproject.car.controller;
 
 
+import kz.carproject.car.db.DBConnector;
 import kz.carproject.car.model.Car;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,7 @@ public class CarController {
     @GetMapping(value = "/") //https://localhost:8081/
     public String getHomePage(Model model){
 
-        ArrayList<Car> cars = Car.getCars();
+        ArrayList<Car> cars = DBConnector.getAllCars();
 
         model.addAttribute("cars", cars);
 
