@@ -37,14 +37,14 @@ public class CarController {
 
     @PostMapping(value = "/add-car")
     public String addCar(Car car){
-        Car.addCar(car);
+        DBConnector.addCar(car);
         return "redirect:/";
     }
 
     @GetMapping(value = "/get-car/{id}")
     public String getCarById(@PathVariable int id, Model model){
 
-        model.addAttribute("car", Car.getCarById(id));
+        model.addAttribute("car", DBConnector.getCarById(id));
 
         return "details-car";
     }
@@ -60,14 +60,14 @@ public class CarController {
     @PostMapping(value = "/update-car")
     public String updateCar(Car car){
 
-        Car.updateCar(car);
+        DBConnector.updateCar(car);
 
         return "redirect:/get-car/" + car.getId();
     }
 
     @PostMapping(value = "/delete-car")
     public String deleteCar(@RequestParam int id){
-        Car.deleteCar(id);
+        DBConnector.deleteCar(id);
         return "redirect:/";
     }
 
