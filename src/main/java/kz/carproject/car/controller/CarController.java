@@ -32,7 +32,8 @@ public class CarController {
     }
 
     @GetMapping(value = "/add-car")
-    public String addCarPage(){
+    public String addCarPage(Model model){
+        model.addAttribute("cities", DBConnector.getAllCities());
         return "add-car-page";
     }
 

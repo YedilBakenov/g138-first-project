@@ -138,12 +138,13 @@ public class DBConnector {
 
         try {
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO cars.cars(model_name, engine, cost, color)" +
-                    "VALUES(?,?,?,?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO cars.cars(model_name, engine, cost, color, city_id) " +
+                    "VALUES(?,?,?,?,?)");
             statement.setString(1, car.getModelName());
             statement.setDouble(2, car.getEngine());
             statement.setDouble(3, car.getCost());
             statement.setString(4, car.getColor());
+            statement.setInt(5, car.getCity().getId());
 
             statement.executeUpdate();
             statement.close();
