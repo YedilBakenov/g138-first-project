@@ -18,20 +18,13 @@ public class Car {
     private double engine;
     private double cost;
     private String color;
+    private City city;
 
     @Getter
     public static ArrayList<Car> cars = new ArrayList<>();
 
     private static int idCar = 7;
 
-    static {
-        cars.add(new Car(1, "BMW X3", 2.0, 60000, "red"));
-        cars.add(new Car(2, "BMW X4", 2.0, 60000, "blue"));
-        cars.add(new Car(3, "BMW X5", 2.0, 60000, "red"));
-        cars.add(new Car(4, "MERCEDES G-35", 5.0, 120000, "black"));
-        cars.add(new Car(5, "MERCEDES S-500", 5.0, 140000, "yellow"));
-        cars.add(new Car(6, "MERCEDES S-500", 5.0, 140000, "yellow"));
-    }
 
     public static void addCar(Car car){
         car.setId(idCar);

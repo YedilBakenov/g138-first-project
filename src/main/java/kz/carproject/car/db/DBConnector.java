@@ -1,6 +1,7 @@
 package kz.carproject.car.db;
 
 import kz.carproject.car.model.Car;
+import kz.carproject.car.model.City;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,7 +31,9 @@ public class DBConnector {
 
         try {
 
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM cars.cars order by id ASC");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM cars.cars car " +
+                    "INNER JOIN cars.cities city " +
+                    "ON city.id = car.city_id order by car.id ASC");
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -42,6 +45,14 @@ public class DBConnector {
                 car.setCost(resultSet.getDouble("cost"));
                 car.setEngine(resultSet.getDouble("engine"));
                 car.setColor(resultSet.getString("color"));
+
+                City city = new City();
+                city.setId(resultSet.getInt("city_id"));
+                city.setCode(resultSet.getString("code"));
+                city.setName(resultSet.getString("name"));
+                city.setValue(resultSet.getInt("value"));
+
+                car.setCity(city);
 
                 cars.add(car);
             }
@@ -61,7 +72,9 @@ public class DBConnector {
 
         try {
 
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM cars.cars WHERE id=?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM cars.cars car " +
+                    "INNER JOIN cars.cities city " +
+                    "ON city.id = car.city_id WHERE car.id=?");
 
             statement.setInt(1, id);
 
@@ -73,6 +86,15 @@ public class DBConnector {
                 car.setCost(resultSet.getDouble("cost"));
                 car.setEngine(resultSet.getDouble("engine"));
                 car.setModelName(resultSet.getString("model_name"));
+
+                City city = new City();
+                city.setId(resultSet.getInt("city_id"));
+                city.setCode(resultSet.getString("code"));
+                city.setName(resultSet.getString("name"));
+                city.setValue(resultSet.getInt("value"));
+
+                car.setCity(city);
+
             }
 
             resultSet.close();
@@ -82,6 +104,34 @@ public class DBConnector {
         }
 
         return car;
+    }
+
+    public static ArrayList<City>getAllCities(){
+        ArrayList<City> cities = new ArrayList<>();
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM cars.cities");
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                City city = new City();
+                city.setId(resultSet.getInt("id"));
+                city.setName(resultSet.getString("name"));
+                city.setCode(resultSet.getString("code"));
+                city.setValue(resultSet.getInt("value"));
+
+                cities.add(city);
+            }
+
+            resultSet.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return cities;
+
     }
 
     public static void addCar(Car car) {
@@ -108,13 +158,14 @@ public class DBConnector {
         try{
 
             PreparedStatement statement = connection.prepareStatement("UPDATE cars.cars SET model_name=?, engine=?, " +
-                    "cost=?, color=? WHERE id=?");
+                    "cost=?, color=?, city_id=? WHERE id=?");
 
             statement.setString(1, car.getModelName());
             statement.setDouble(2, car.getEngine());
             statement.setDouble(3, car.getCost());
             statement.setString(4, car.getColor());
-            statement.setInt(5, car.getId());
+            statement.setInt(5, car.getCity().getId());
+            statement.setInt(6, car.getId());
 
             statement.executeUpdate();
             statement.close();

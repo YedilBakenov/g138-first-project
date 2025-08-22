@@ -50,6 +50,21 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
+                        <label>CITY:</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <select class="form-control" name="city.id">
+                            <option th:each="city: ${cities}"
+                                    th:value="${city.id}"
+                                    th:text="${city.name + ' | ' + city.code}"
+                                    th:selected="${city.id==car.city.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
                         <button class="btn btn-success btn-sm">UPDATE CAR</button>
                     </div>
                 </div>

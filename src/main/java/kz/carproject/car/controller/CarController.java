@@ -3,6 +3,7 @@ package kz.carproject.car.controller;
 
 import kz.carproject.car.db.DBConnector;
 import kz.carproject.car.model.Car;
+import kz.carproject.car.model.City;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class CarController {
     public String getCarById(@PathVariable int id, Model model){
 
         model.addAttribute("car", DBConnector.getCarById(id));
+        model.addAttribute("cities", DBConnector.getAllCities());
 
         return "details-car";
     }
