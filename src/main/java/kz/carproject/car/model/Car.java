@@ -1,7 +1,6 @@
 package kz.carproject.car.model;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +13,19 @@ import java.util.NoSuchElementException;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "cars", schema = "cars")
 public class Car {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String modelName;
     private double engine;
     private double cost;
     private String color;
-    private City city;
+//    private City city;
 
     @Getter
     public static ArrayList<Car> cars = new ArrayList<>();

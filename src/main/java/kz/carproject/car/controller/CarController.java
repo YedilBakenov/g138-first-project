@@ -1,9 +1,12 @@
 package kz.carproject.car.controller;
 
 
-import kz.carproject.car.db.DBConnector;
+//import kz.carproject.car.db.DBConnector;
 import kz.carproject.car.model.Car;
 import kz.carproject.car.model.City;
+import kz.carproject.car.repository.CarRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +15,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.NoSuchElementException;
 
 @Controller
+@RequiredArgsConstructor
 public class CarController {
+
+//    private final DBConnector dbConnector;
+    private final CarRepository carRepository;
 
     @GetMapping(value = "/") //https://localhost:8081/
     public String getHomePage(Model model){
 
-        ArrayList<Car> cars = DBConnector.getAllCars();
+        ArrayList<Car> cars = (ArrayList<Car>)carRepository.findAll(Sort.by(Sort.Order.asc("id")));
 
         model.addAttribute("cars", cars);
 
@@ -33,21 +42,24 @@ public class CarController {
 
     @GetMapping(value = "/add-car")
     public String addCarPage(Model model){
-        model.addAttribute("cities", DBConnector.getAllCities());
+//        model.addAttribute("cities", dbConnector.getAllCities());
         return "add-car-page";
     }
 
     @PostMapping(value = "/add-car")
     public String addCar(Car car){
-        DBConnector.addCar(car);
+        carRepository.save(car);
         return "redirect:/";
     }
 
     @GetMapping(value = "/get-car/{id}")
     public String getCarById(@PathVariable int id, Model model){
 
-        model.addAttribute("car", DBConnector.getCarById(id));
-        model.addAttribute("cities", DBConnector.getAllCities());
+        model.addAttribute("car", carRepository.findById(id).orElseThrow(()-> {
+            return new NoSuchElementException("Not Found Car!");
+        }));
+
+//        model.addAttribute("cities", dbConnector.getAllCities());
 
         return "details-car";
     }
@@ -55,7 +67,7 @@ public class CarController {
     @GetMapping(value = "/get-car-2")
     public String getCarById2(@RequestParam int id,
                               Model model){
-        model.addAttribute("car", Car.getCarById(id));
+        model.addAttribute("car", carRepository.findById(id).orElseThrow());
 
         return "details-car";
     }
@@ -63,14 +75,14 @@ public class CarController {
     @PostMapping(value = "/update-car")
     public String updateCar(Car car){
 
-        DBConnector.updateCar(car);
+        carRepository.save(car);
 
         return "redirect:/get-car/" + car.getId();
     }
 
     @PostMapping(value = "/delete-car")
     public String deleteCar(@RequestParam int id){
-        DBConnector.deleteCar(id);
+        carRepository.deleteById(id);
         return "redirect:/";
     }
 

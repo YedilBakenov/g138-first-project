@@ -24,7 +24,7 @@
             <td th:text="${c.engine}"></td>
             <td th:text="${c.color}"></td>
             <td th:text="${c.cost}"></td>
-            <td th:text="${c.city.name + '|' + c.city.code}"></td>
+<!--            <td th:text="${c.city.name + '|' + c.city.code}"></td>-->
             <td><a class="btn btn-secondary btn-sm" th:href="@{'/get-car/' + ${c.id}}">DETAILS</a></td>
             <td>
                 <form action="/delete-car" method="post">
