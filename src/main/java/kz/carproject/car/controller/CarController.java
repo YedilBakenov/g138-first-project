@@ -1,10 +1,10 @@
 package kz.carproject.car.controller;
 
 
-//import kz.carproject.car.db.DBConnector;
 import kz.carproject.car.model.Car;
 import kz.carproject.car.model.City;
 import kz.carproject.car.repository.CarRepository;
+import kz.carproject.car.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -24,6 +24,7 @@ public class CarController {
 
 //    private final DBConnector dbConnector;
     private final CarRepository carRepository;
+    private final CityRepository cityRepository;
 
     @GetMapping(value = "/") //https://localhost:8081/
     public String getHomePage(Model model){
@@ -52,12 +53,47 @@ public class CarController {
         return "redirect:/";
     }
 
+    @PostMapping(value = "/add-city")
+    public String addCity(@RequestParam int car_id,
+                          @RequestParam int city_id){
+
+        Car car = carRepository.findById(car_id).get();
+        City city = cityRepository.findById(city_id).get();
+
+        car.getCities().add(city);
+
+        carRepository.save(car);
+
+        return "redirect:/get-car/" + car_id;
+    }
+
+    @PostMapping(value = "/delete-city")
+    public String deleteCity(@RequestParam int car_id,
+                          @RequestParam int city_id){
+
+        Car car = carRepository.findById(car_id).get();
+        City city = cityRepository.findById(city_id).get();
+
+        car.getCities().remove(city);
+
+        carRepository.save(car);
+
+        return "redirect:/get-car/" + car_id;
+    }
+
     @GetMapping(value = "/get-car/{id}")
     public String getCarById(@PathVariable int id, Model model){
 
         model.addAttribute("car", carRepository.findById(id).orElseThrow(()-> {
             return new NoSuchElementException("Not Found Car!");
         }));
+
+        Car car = carRepository.findById(id).get();
+        List<City> cities = cityRepository.findAll();
+        cities.removeAll(car.getCities());
+
+        model.addAttribute("cities", cities);
+
 
 //        model.addAttribute("cities", dbConnector.getAllCities());
 

@@ -5,7 +5,64 @@
 <body>
 <div layout:fragment="content">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-7">
+            <div class="row">
+                <div class="col-6">
+                    <form action="/delete-city" method="post">
+                        <input type="hidden" name="car_id" th:value="${car.id}">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>CODE</th>
+                                <th>VALUE</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="city: ${car.getCities()}">
+                                <input type="hidden" name="city_id" th:value="${city.id}">
+                                <td th:text="${city.id}"></td>
+                                <td th:text="${city.name}"></td>
+                                <td th:text="${city.code}"></td>
+                                <td th:text="${city.value}"></td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm"> >>></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="ps-3 col-6">
+                    <form action="/add-city" method="post">
+                        <input type="hidden" name="car_id" th:value="${car.id}">
+                        <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NAME</th>
+                                    <th>CODE</th>
+                                    <th>VALUE</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="city: ${cities}">
+                                    <input type="hidden" name="city_id" th:value="${city.id}">
+                                    <td th:text="${city.id}"></td>
+                                    <td th:text="${city.name}"></td>
+                                    <td th:text="${city.code}"></td>
+                                    <td th:text="${city.value}"></td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"> <<<</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                    </form>
+                </div>
+            </div>
+
             <form action="/update-car" method="post">
                 <input type=hidden name="id" th:value="${car.id}">
                 <div class="row mt-2">
@@ -48,21 +105,21 @@
                         <input type="text" class="form-control" name="color" th:value="${car.color}">
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <label>CITY:</label>
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <select class="form-control" name="city.id">
-                            <option th:each="city: ${cities}"
-                                    th:value="${city.id}"
-                                    th:text="${city.name + ' | ' + city.code}"
-                                    th:selected="${city.id==car.city.id}"></option>
-                        </select>
-                    </div>
-                </div>
+                <!--                <div class="row mt-2">-->
+                <!--                    <div class="col-12">-->
+                <!--                        <label>CITY:</label>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="row mt-2">-->
+                <!--                    <div class="col-12">-->
+                <!--                        <select class="form-control" name="city.id">-->
+                <!--                            <option th:each="city: ${cities}"-->
+                <!--                                    th:value="${city.id}"-->
+                <!--                                    th:text="${city.name + ' | ' + city.code}"-->
+                <!--                                    th:selected="${city.id==car.city.id}"></option>-->
+                <!--                        </select>-->
+                <!--                    </div>-->
+                <!--                </div>-->
                 <div class="row mt-2">
                     <div class="col-12">
                         <button class="btn btn-success btn-sm">UPDATE CAR</button>

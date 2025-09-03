@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Getter
@@ -25,7 +26,9 @@ public class Car {
     private double engine;
     private double cost;
     private String color;
-//    private City city;
+
+    @ManyToMany
+    private List<City> cities;
 
     @Getter
     public static ArrayList<Car> cars = new ArrayList<>();
