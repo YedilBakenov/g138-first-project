@@ -21,13 +21,13 @@
                             </thead>
                             <tbody>
                             <tr th:each="city: ${car.getCities()}">
-                                <input type="hidden" name="city_id" th:value="${city.id}">
                                 <td th:text="${city.id}"></td>
                                 <td th:text="${city.name}"></td>
                                 <td th:text="${city.code}"></td>
                                 <td th:text="${city.value}"></td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm"> >>></button>
+                                    <button name="city_id" th:value="${city.id}" class="btn btn-danger btn-sm"> >>>
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
@@ -38,27 +38,25 @@
                     <form action="/add-city" method="post">
                         <input type="hidden" name="car_id" th:value="${car.id}">
                         <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>NAME</th>
-                                    <th>CODE</th>
-                                    <th>VALUE</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="city: ${cities}">
-                                    <input type="hidden" name="city_id" th:value="${city.id}">
-                                    <td th:text="${city.id}"></td>
-                                    <td th:text="${city.name}"></td>
-                                    <td th:text="${city.code}"></td>
-                                    <td th:text="${city.value}"></td>
-                                    <td>
-                                        <button class="btn btn-success btn-sm"> <<<</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>CODE</th>
+                                <th>VALUE</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="city: ${cities}">
+                                <td th:text="${city.id}"></td>
+                                <td th:text="${city.name}"></td>
+                                <td th:text="${city.code}"></td>
+                                <td th:text="${city.value}"></td>
+                                <td><button name="city_id" th:value="${city.id}" class="btn btn-success btn-sm"> << </button></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
                     </form>
                 </div>
             </div>

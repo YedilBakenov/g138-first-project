@@ -3,10 +3,11 @@ package kz.carproject.car.controller;
 
 import kz.carproject.car.model.Car;
 import kz.carproject.car.model.City;
-import kz.carproject.car.repository.CarRepository;
 import kz.carproject.car.repository.CityRepository;
+import kz.carproject.car.service.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +17,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Controller
 @RequiredArgsConstructor
 public class CarController {
 
 //    private final DBConnector dbConnector;
-    private final CarRepository carRepository;
     private final CityRepository cityRepository;
+
+    @Autowired
+    @Qualifier("test")
+    private CarService carService;
 
     @GetMapping(value = "/") //https://localhost:8081/
     public String getHomePage(Model model){
 
-        ArrayList<Car> cars = (ArrayList<Car>)carRepository.findAll(Sort.by(Sort.Order.asc("id")));
+        ArrayList<Car> cars = (ArrayList<Car>)carService.getAllCars();
 
         model.addAttribute("cars", cars);
 
@@ -49,20 +52,22 @@ public class CarController {
 
     @PostMapping(value = "/add-car")
     public String addCar(Car car){
-        carRepository.save(car);
+        carService.addCar(car);
         return "redirect:/";
     }
 
     @PostMapping(value = "/add-city")
-    public String addCity(@RequestParam int car_id,
-                          @RequestParam int city_id){
+    public String addCity(@RequestParam(name = "car_id") int car_id,
+                          @RequestParam(name = "city_id") int city_id){
 
-        Car car = carRepository.findById(car_id).get();
+        Car car = carService.getCarById(car_id);
         City city = cityRepository.findById(city_id).get();
 
         car.getCities().add(city);
 
-        carRepository.save(car);
+        carService.addCar(car);
+
+        System.out.println("ID CITY" + city_id);
 
         return "redirect:/get-car/" + car_id;
     }
@@ -71,12 +76,12 @@ public class CarController {
     public String deleteCity(@RequestParam int car_id,
                           @RequestParam int city_id){
 
-        Car car = carRepository.findById(car_id).get();
+        Car car = carService.getCarById(car_id);
         City city = cityRepository.findById(city_id).get();
 
         car.getCities().remove(city);
 
-        carRepository.save(car);
+        carService.addCar(car);
 
         return "redirect:/get-car/" + car_id;
     }
@@ -84,11 +89,9 @@ public class CarController {
     @GetMapping(value = "/get-car/{id}")
     public String getCarById(@PathVariable int id, Model model){
 
-        model.addAttribute("car", carRepository.findById(id).orElseThrow(()-> {
-            return new NoSuchElementException("Not Found Car!");
-        }));
+        model.addAttribute("car", carService.getCarById(id));
 
-        Car car = carRepository.findById(id).get();
+        Car car = carService.getCarById(id);
         List<City> cities = cityRepository.findAll();
         cities.removeAll(car.getCities());
 
@@ -103,7 +106,7 @@ public class CarController {
     @GetMapping(value = "/get-car-2")
     public String getCarById2(@RequestParam int id,
                               Model model){
-        model.addAttribute("car", carRepository.findById(id).orElseThrow());
+        model.addAttribute("car", carService.getCarById(id));
 
         return "details-car";
     }
@@ -111,14 +114,14 @@ public class CarController {
     @PostMapping(value = "/update-car")
     public String updateCar(Car car){
 
-        carRepository.save(car);
+        carService.updateCar(car);
 
         return "redirect:/get-car/" + car.getId();
     }
 
     @PostMapping(value = "/delete-car")
     public String deleteCar(@RequestParam int id){
-        carRepository.deleteById(id);
+        carService.deleteCar(id);
         return "redirect:/";
     }
 

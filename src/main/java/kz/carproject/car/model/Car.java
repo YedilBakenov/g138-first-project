@@ -27,8 +27,16 @@ public class Car {
     private double cost;
     private String color;
 
+    @OneToOne
+    @JoinColumn(name = "car_passport_id")
+    private CarPassport carPassport;
+
     @ManyToMany
     private List<City> cities;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 
     @Getter
     public static ArrayList<Car> cars = new ArrayList<>();

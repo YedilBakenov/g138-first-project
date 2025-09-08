@@ -12,6 +12,7 @@
             <th>ENGINE</th>
             <th>COLOR</th>
             <th>COST</th>
+            <th>TECH PASSPORT</th>
             <th style="width: 8%">DETAILS</th>
             <th style="width: 8%">DELETE</th>
         </tr>
@@ -23,6 +24,7 @@
             <td th:text="${c.engine}"></td>
             <td th:text="${c.color}"></td>
             <td th:text="${c.cost}"></td>
+            <td th:if="${c.carPassport!=null}" th:text="${c.carPassport.number}"></td>
             <td><a class="btn btn-secondary btn-sm" th:href="@{'/get-car/' + ${c.id}}">DETAILS</a></td>
             <td>
                 <form action="/delete-car" method="post">
