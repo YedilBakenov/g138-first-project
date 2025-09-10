@@ -42,4 +42,14 @@ public class CarServiceImpl implements CarService {
     public void deleteCar(int id) {
         carRepository.deleteById(id);
     }
+
+    @Override
+    public Car findCarColor(String color) {
+        return carRepository.findCarByColor(color);
+    }
+
+    @Override
+    public List<Car> findCarsByText(String word) {
+        return carRepository.searchCarsByWord(word);
+    }
 }

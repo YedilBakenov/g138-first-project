@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-                xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-                layout:decorate="main-layout.html">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="main-layout.html">
 <body>
 <div layout:fragment="content">
+    <div class="mt-2">
+        <form action="/find-color" method="get">
+            <input type="text" name="color" class="form-control">
+            <button class="btn btn-sm btn-success">SEARCH</button>
+        </form>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>

@@ -26,7 +26,7 @@ public class CarController {
     private final CityRepository cityRepository;
 
     @Autowired
-    @Qualifier("test")
+    @Qualifier("main")
     private CarService carService;
 
     @GetMapping(value = "/") //https://localhost:8081/
@@ -111,6 +111,14 @@ public class CarController {
         return "details-car";
     }
 
+    @GetMapping(value = "/search")
+    public String getCarsByText(@RequestParam("word") String word,
+                              Model model){
+        model.addAttribute("cars", carService.findCarsByText(word));
+
+        return "index";
+    }
+
     @PostMapping(value = "/update-car")
     public String updateCar(Car car){
 
@@ -123,6 +131,18 @@ public class CarController {
     public String deleteCar(@RequestParam int id){
         carService.deleteCar(id);
         return "redirect:/";
+    }
+
+    @GetMapping(value = "/find-color")
+    public String findCArByColor(@RequestParam String color,
+                                 Model model){
+        Car car = carService.findCarColor(color);
+        model.addAttribute("car",car);
+
+        System.out.println(car.getColor());
+        System.out.println(car.getModelName());
+
+        return "details-by-color";
     }
 
 }

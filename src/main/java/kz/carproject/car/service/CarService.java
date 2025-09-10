@@ -18,5 +18,8 @@ public interface CarService {
 
      void deleteCar(int id);
 
+     Car findCarColor(String color);
+
+     List<Car> findCarsByText(String word);
 
 }
