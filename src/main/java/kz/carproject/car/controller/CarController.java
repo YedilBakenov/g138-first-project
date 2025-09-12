@@ -20,7 +20,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class CarController {
+public class CarController {  //http://localhost:8081/
 
 //    private final DBConnector dbConnector;
     private final CityRepository cityRepository;
