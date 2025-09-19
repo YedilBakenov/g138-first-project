@@ -2,6 +2,8 @@ package kz.carproject.car.repository;
 
 import jakarta.transaction.Transactional;
 import kz.carproject.car.model.Car;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,5 +26,8 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     @Query(value = "SELECT * FROM cars.cars WHERE engine = :engine", nativeQuery = true)
     Car findCarEngineNative(@RequestParam("engine") Double engine);
 
+    Page<Car> findAll(Pageable pageable);
+
+    Page<Car> findByCostGreaterThan(double costIsGreaterThan, Pageable pageable);
 
 }

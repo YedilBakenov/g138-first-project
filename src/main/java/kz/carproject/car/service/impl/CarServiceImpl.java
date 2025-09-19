@@ -4,6 +4,8 @@ import kz.carproject.car.model.Car;
 import kz.carproject.car.repository.CarRepository;
 import kz.carproject.car.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +53,15 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> findCarsByText(String word) {
         return carRepository.searchCarsByWord(word);
+    }
+
+    @Override
+    public Page<Car> findAllPagination(Pageable pageable) {
+        return carRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Car> findByCostGreaterThan(double cost, Pageable pageable) {
+        return carRepository.findByCostGreaterThan(cost, pageable);
     }
 }

@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarController {  //http://localhost:8081/
 
-//    private final DBConnector dbConnector;
     private final CityRepository cityRepository;
 
     @Autowired

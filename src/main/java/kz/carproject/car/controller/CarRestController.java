@@ -3,11 +3,14 @@ package kz.carproject.car.controller;
 
 import kz.carproject.car.model.Car;
 import kz.carproject.car.repository.CarRepositoryCustom;
-import kz.carproject.car.repository.impl.CarRepositoryCustomImpl;
 import kz.carproject.car.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -65,6 +68,35 @@ public class CarRestController {
     @GetMapping(value = "/sorted-cost")
     public List<Car> sortedCars(){
         return carRepositoryCustom.sortCarsByCost();
+    }
+
+    @GetMapping(value = "/pagination")
+    public Page<Car> getAllCars(@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "2") int size,
+                                @RequestParam(defaultValue = "id") String param,
+                                @RequestParam(defaultValue = "asc") String direction){
+
+        Sort sort = direction.equalsIgnoreCase("desc")? Sort.by(param).descending()
+                : Sort.by(param).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return carService.findAllPagination(pageable);
+    }
+
+    @GetMapping(value = "/pagination-cost")
+    public Page<Car> getAllCarsCostPagination(@RequestParam double cost,
+                                              @RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "2") int size,
+                                              @RequestParam(defaultValue = "cost") String param,
+                                              @RequestParam(defaultValue = "asc") String direction){
+
+        Sort sort = direction.equalsIgnoreCase("desc")? Sort.by(param).descending()
+                : Sort.by(param).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return carService.findByCostGreaterThan(cost, pageable);
     }
 
 

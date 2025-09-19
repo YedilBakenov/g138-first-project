@@ -1,6 +1,8 @@
 package kz.carproject.car.service;
 
 import kz.carproject.car.model.Car;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,5 +23,9 @@ public interface CarService {
      Car findCarColor(String color);
 
      List<Car> findCarsByText(String word);
+
+     Page<Car> findAllPagination(Pageable pageable);
+
+     Page<Car> findByCostGreaterThan(double cost, Pageable pageable);
 
 }
