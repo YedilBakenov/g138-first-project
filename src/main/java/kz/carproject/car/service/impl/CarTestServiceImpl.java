@@ -1,5 +1,6 @@
 package kz.carproject.car.service.impl;
 
+import kz.carproject.car.dto.CarDto;
 import kz.carproject.car.model.Car;
 import kz.carproject.car.repository.CarRepository;
 import kz.carproject.car.service.CarService;
@@ -63,5 +64,15 @@ public class CarTestServiceImpl implements CarService {
     @Override
     public Page<Car> findByCostGreaterThan(double cost, Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public CarDto toDto(Car car) {
+        return null;
+    }
+
+    @Override
+    public List<CarDto> toListDto(List<Car> cars) {
+        return List.of();
     }
 }

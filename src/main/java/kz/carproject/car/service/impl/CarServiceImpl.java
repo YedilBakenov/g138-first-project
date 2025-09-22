@@ -1,5 +1,6 @@
 package kz.carproject.car.service.impl;
 
+import kz.carproject.car.dto.CarDto;
 import kz.carproject.car.model.Car;
 import kz.carproject.car.repository.CarRepository;
 import kz.carproject.car.service.CarService;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -64,4 +66,38 @@ public class CarServiceImpl implements CarService {
     public Page<Car> findByCostGreaterThan(double cost, Pageable pageable) {
         return carRepository.findByCostGreaterThan(cost, pageable);
     }
+
+    @Override
+    public CarDto toDto(Car car) {
+
+        if(car==null){
+            return null;
+        }
+
+        CarDto carDto = new CarDto();
+
+        carDto.setId(car.getId());
+        carDto.setCarPassport(car.getCarPassport());
+        carDto.setEngine(car.getEngine());
+        carDto.setColor(car.getColor());
+        carDto.setCena(car.getCost());
+        carDto.setCities(car.getCities());
+        carDto.setName(car.getModelName());
+        carDto.setOwner(car.getOwner());
+
+        return carDto;
+    }
+
+    @Override
+    public List<CarDto> toListDto(List<Car> cars) {
+
+        List<CarDto> carDtoList = new ArrayList<>();
+
+        for(Car car: cars){
+            carDtoList.add(toDto(car));
+        }
+        return carDtoList;
+    }
+
+
 }

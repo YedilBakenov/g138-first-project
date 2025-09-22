@@ -1,6 +1,8 @@
 package kz.carproject.car.controller;
 
 
+import kz.carproject.car.dto.CarDto;
+import kz.carproject.car.mapper.CarMapper;
 import kz.carproject.car.model.Car;
 import kz.carproject.car.repository.CarRepositoryCustom;
 import kz.carproject.car.service.CarService;
@@ -25,15 +27,17 @@ public class CarRestController {
     private CarService carService;
 
     private final CarRepositoryCustom carRepositoryCustom;
+    private final CarMapper carMapper;
 
     @GetMapping
-    public List<Car> getMain(){
-        return carService.getAllCars();
+    public List<CarDto> getMain(){
+        return carMapper.carDtoList(carService.getAllCars());
     }
 
     @GetMapping(value = "/get-car/{id}")
-    public Car getCarById(@PathVariable int id){
-        return carService.getCarById(id);
+    public CarDto getCarById(@PathVariable int id){
+
+        return carMapper.toDto(carService.getCarById(id));
     }
 
     @PutMapping(value = "/update-car")
@@ -53,16 +57,16 @@ public class CarRestController {
     }
 
     @GetMapping(value = "/greater-cost")
-    public List<Car> getCars(@RequestParam double cost){
+    public List<CarDto> getCars(@RequestParam double cost){
 
-        return carRepositoryCustom.findCarsMoreCost(cost);
+        return  carMapper.carDtoList(carRepositoryCustom.findCarsMoreCost(cost));
     }
 
     @GetMapping(value = "/name-or-cost")
-    public List<Car> getCars(@RequestParam(required = false) String modelName,
+    public List<CarDto> getCars(@RequestParam(required = false) String modelName,
                              @RequestParam(required = false) Double cost){
 
-        return carRepositoryCustom.findCarsByModelNameOrCost(modelName, cost);
+        return carMapper.carDtoList(carRepositoryCustom.findCarsByModelNameOrCost(modelName, cost));
     }
 
     @GetMapping(value = "/sorted-cost")
